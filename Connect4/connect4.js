@@ -30,9 +30,6 @@ class Connect4 {
         }
     }
 
-    winnerCase () {
-        
-    }
 // -------------------------------------
 // EVENT LISTENERS FOR UI and GAMEPLAY
 // -------------------------------------
@@ -41,7 +38,7 @@ class Connect4 {
         const $grid = $(this.element);
         const that = this; // stores reference to the original object so that we can also have access to the this event in the event listener functions below
 
-        // Finds last empty slot in a given column.
+        // Iterates backwards and finds first empty slot in a given column.
         const findEmptySlot = (col) => {
             const slots = $(`.col[data-col='${col}']`);
             // Grabs all elements with same data-col identifier
@@ -76,7 +73,7 @@ class Connect4 {
 
             const winner = that.checkWinner($emptySlot.data('row'),$emptySlot.data('col'))
             if (winner) {
-                $('#win').text(`${that.player} WINS!`).css('font-size','60px').css('color',`${that.player}`);
+                $('#win').text(`${that.player} wins!`).css('font-size','60px').css('color',`${that.player}`);
                 $('.modal-container').addClass('modal-active')
                 return;
             }
@@ -98,7 +95,7 @@ class Connect4 {
     checkWinner(row,col) {
         const that = this;
 
-        function $getCell(i,x) {
+        function $getSlot(i,x) {
             return $(`.col[data-row='${i}'][data-col='${x}']`)
         }
 
@@ -107,12 +104,12 @@ class Connect4 {
             let total = 0;
             let i = row + direction.i;
             let x = col + direction.x;
-            let $cell = $getCell(i,x);
-            while (i>=0 && i<that.rows && x>=0 && x < that.cols && $cell.hasClass(`${that.player}`)) {
+            let $slot = $getSlot(i,x);
+            while (i>=0 && i<that.rows && x>=0 && x < that.cols && $slot.hasClass(`${that.player}`)) {
                 total++;
                 i += direction.i;
                 x += direction.x;
-                $cell = $getCell(i,x);
+                $slot = $getSlot(i,x);
             }
             return total;
         }
